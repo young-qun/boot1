@@ -1,6 +1,7 @@
 package com.ssm.young.bootdemo;
 
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.validation.MessageCodesResolver;
 import org.springframework.validation.Validator;
@@ -9,6 +10,7 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +32,10 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
     }
 
+    /**
+     * 配置异步支持
+     * @param configurer
+     */
     @Override
     public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
 
@@ -46,18 +52,32 @@ public class MyMvcConfig implements WebMvcConfigurer {
     }
 
     @Override
+    /**
+     * 为mvc添加拦截器
+     */
     public void addInterceptors(InterceptorRegistry registry) {
 //        registry.addInterceptor().excludePathPatterns().addPathPatterns()''
     }
 
     @Override
+    /**
+     * 对于静态资源的处理
+     */
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //        registry.addResourceHandler().addResourceLocations();
     }
 
+    /**
+     * 跨域的支持
+     * @param registry
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST", "DELETE", "PUT")
+                .maxAge(3600 * 24);
     }
 
     @Override
@@ -80,9 +100,31 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
     }
 
+    /**
+     * 添加消息转换器
+     * @param converters
+     */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-
+        //使用的是阿里 fastjson
+/*//1.需要定义一个convert转换消息的对象;
+        FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
+        //2.添加fastJson的配置信息，比如：是否要格式化返回的json数据;
+        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat,
+                SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteNullStringAsEmpty,
+                SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteNullListAsEmpty,
+                SerializerFeature.WriteDateUseDateFormat);
+        //3处理中文乱码问题
+        List<MediaType> fastMediaTypes = new ArrayList<>();
+        fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
+        //4.在convert中添加配置信息.
+        fastJsonHttpMessageConverter.setSupportedMediaTypes(fastMediaTypes);
+        fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
+        //5.将convert添加到converters当中.
+        converters.add(fastJsonHttpMessageConverter);*/
     }
 
     @Override

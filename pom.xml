@@ -68,13 +68,12 @@
             <version>${log4j.version}</version>
         </dependency>
 
-        <!--连接池 druid-->
+        <!--druid整合spring-->
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.1.9</version>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.5</version>
         </dependency>
-
 	</dependencies>
 
 	<build>
